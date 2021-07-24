@@ -16,27 +16,31 @@
           </v-col>
           <v-col cols="4">
             <v-text-field
-              v-model="investments"
+              v-model="investments_comp"
               label="Investments"
               :rules="rules"
               clearable
             ></v-text-field>
           </v-col>
           <v-col cols="4">
-            <v-text-field v-model="expenses" label="Expenses"></v-text-field>
+            <v-text-field
+              v-model="expenses_comp"
+              label="Expenses"
+              clearable
+            ></v-text-field>
           </v-col>
         </v-row>
 
         <v-row justify="space-between">
           <v-col cols="2">
             <v-text-field
-              v-model="inv_exp_ratio_comp"
+              v-model="inv_exp_ratio"
               label="Invest Expense Ratio"
             ></v-text-field>
           </v-col>
           <v-col cols="10">
             <v-slider
-              v-model="inv_exp_ratio"
+              v-model="inv_exp_ratio_10_comp"
               :min="slider_min"
               :max="slider_max"
               label=""
@@ -80,9 +84,8 @@ export default {
       slider_max: 100,
 
       income: 2000,
-      investments: 200,
+      inv_exp_ratio: 1,
 
-      inv_exp_ratio: 10,
       interest_rate: 8,
 
       rules: [
@@ -93,27 +96,36 @@ export default {
   },
 
   computed: {
-    expenses: {
+    investments_comp: {
       get: function () {
-        return this.income - this.investments;
+        return parseInt(
+          (this.income * parseFloat(this.inv_exp_ratio)) /
+            (1 + parseFloat(this.inv_exp_ratio))
+        );
       },
       set: function (val) {
-        this.investments = this.income - val;
+        var expenses = this.income - val;
+        this.inv_exp_ratio = val / expenses;
       },
     },
 
-    inv_exp_ratio_comp: {
+    expenses_comp: {
       get: function () {
-        return this.inv_exp_ratio / 10;
+        return parseInt(this.income / (1 + parseFloat(this.inv_exp_ratio)));
       },
       set: function (val) {
-        this.inv_exp_ratio = val * 10;
+        var investments = this.income - val;
+        this.inv_exp_ratio = investments / val;
+      },
+    },
 
-        console.log("value=", val)
-        this.investments = parseInt(
-          this.income * val / (1 + val)
-        );
-        console.log(this.investments);
+    inv_exp_ratio_10_comp: {
+      get: function () {
+        return this.inv_exp_ratio * 10;
+      },
+      set: function (val) {
+        val = parseFloat(val);
+        this.inv_exp_ratio = val / 10;
       },
     },
   },
