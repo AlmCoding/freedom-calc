@@ -29,6 +29,7 @@
               v-model="expenses"
               @change="expenses_changed"
               label="Expenses"
+              clearable
             ></v-text-field>
           </v-col>
         </v-row>
@@ -73,6 +74,17 @@
             </v-slider>
           </v-col>
         </v-row>
+
+        <v-row justify="space-between">
+          <v-col cols="12">
+            <v-text-field
+              v-model="current_networth"
+              @change="compute_trajectory"
+              label="Current Networth"
+              clearable
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
     <!-- </v-form> -->
@@ -89,14 +101,15 @@ export default {
       slider_min: 0,
       slider_max: 100,
 
-      income: 2000,
-      investments: 1000,
-      expenses: 1000,
+      income: 5000,
+      investments: 3000,
+      expenses: 2000,
 
-      inv_exp_ratio: 1,
-      inv_exp_ratio_10: 10,
+      inv_exp_ratio: 1.5,
+      inv_exp_ratio_10: 15,
 
-      interest_rate: 8,
+      interest_rate: 5,
+      current_networth: 85000,
 
       rules: [
         (value) => !!value || "Required.",
@@ -154,12 +167,12 @@ export default {
 
       var annual_investments = this.investments * 12;
       var interest = this.interest_rate / 100;
-      var net_worth = 0;
+      var networth = this.current_networth;
 
       for (let year = 0; year < 50; year++) {
-        net_worth = net_worth * (1 + interest);
-        net_worth += annual_investments;
-        this.trajectory.push(net_worth);
+        networth = networth * (1 + interest);
+        networth += annual_investments;
+        this.trajectory.push(networth);
       }
       console.log(this.trajectory);
     },
