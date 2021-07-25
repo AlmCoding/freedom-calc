@@ -2,7 +2,7 @@
   <v-container>
     <!-- <v-form ref="form"> -->
     <v-card elevation="6">
-      <v-card-title>Personal Earnigs and Investments</v-card-title>
+      <v-card-title>Monthly Income and Investments</v-card-title>
 
       <v-card-text>
         <v-row justify="space-between">
@@ -40,9 +40,9 @@
           </v-col>
           <v-col cols="10">
             <v-slider
-              v-model="inv_exp_ratio_10_comp"
+              v-model="inv_exp_ratio_slider_comp"
               :min="slider_min"
-              :max="slider_max"
+              :max="slider_max_ratio"
               label=""
             >
             </v-slider>
@@ -76,12 +76,13 @@
 
 <script>
 export default {
-  name: "HelloWorld",
+  name: "FinancialInputs",
 
   data: function () {
     return {
       slider_min: 0,
       slider_max: 100,
+      slider_max_ratio: 100000,
 
       income: 2000,
       inv_exp_ratio: 1,
@@ -104,6 +105,7 @@ export default {
         );
       },
       set: function (val) {
+        val = parseInt(val);
         var expenses = this.income - val;
         this.inv_exp_ratio = val / expenses;
       },
@@ -119,16 +121,17 @@ export default {
       },
     },
 
-    inv_exp_ratio_10_comp: {
+    inv_exp_ratio_slider_comp: {
       get: function () {
-        return this.inv_exp_ratio * 10;
+        return this.inv_exp_ratio * 10000;
       },
       set: function (val) {
         val = parseFloat(val);
-        this.inv_exp_ratio = val / 10;
+        this.inv_exp_ratio = val / 10000;
       },
     },
   },
+  
   methods: {},
 };
 </script>
