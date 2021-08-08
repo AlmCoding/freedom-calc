@@ -86,7 +86,7 @@
         </v-row>
       </v-card-text>
 
-      <FinancialVisualization :data_array="trajectory" />
+      <FinancialVisualization :trajectory="trajectory" />
     </v-card>
   </v-container>
 </template>

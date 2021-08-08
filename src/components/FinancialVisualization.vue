@@ -1,22 +1,30 @@
 <template>
   <v-container>
     <div>
-      <apexchart
-        type="line"
-        :options="options"
-        :series="series"
-      ></apexchart>
-    </div>
+      <apexchart type="line" :options="options" :series="series"></apexchart>
 
+      <v-btn @click="button_clicked" elevation="2">Test</v-btn>
+    </div>
   </v-container>
 </template>
 
 <script>
-
 export default {
   name: "FinancialVisualization",
 
-  props: ["data_array"],
+  props: {
+    trajectory: [],
+  },
+
+  watch: {
+    trajectory: function () {
+      this.series = [
+        {
+          data: this.trajectory,
+        },
+      ];
+    },
+  },
 
   data: function () {
     return {
@@ -31,13 +39,20 @@ export default {
       series: [
         {
           name: "Networth",
-          data: this.data_array,
+          data: this.trajectory,
         },
       ],
     };
   },
 
-  computed: {},
-  methods: {},
+  computed: {
+  },
+
+  methods: {
+    button_clicked() {
+      console.log("button clicked");
+      console.log(this.trajectory);
+    },
+  },
 };
 </script>
