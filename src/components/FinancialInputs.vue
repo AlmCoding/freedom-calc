@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <!-- <v-form ref="form"> -->
     <v-card elevation="6">
       <v-card-title>Personal Earnigs and Investments</v-card-title>
 
@@ -86,15 +85,22 @@
           </v-col>
         </v-row>
       </v-card-text>
+
+      <FinancialVisualization :data_array="trajectory" />
     </v-card>
-    <!-- </v-form> -->
   </v-container>
 </template>
 
 
 <script>
+import FinancialVisualization from "./FinancialVisualization";
+
 export default {
-  name: "HelloWorld",
+  name: "FinancialInput",
+
+  components: {
+    FinancialVisualization,
+  },
 
   data: function () {
     return {
@@ -109,7 +115,7 @@ export default {
       inv_exp_ratio_10: 15,
 
       interest_rate: 5,
-      current_networth: 85000,
+      current_networth: 100000,
 
       rules: [
         (value) => !!value || "Required.",
@@ -118,6 +124,10 @@ export default {
 
       trajectory: [],
     };
+  },
+
+  mounted: function () {
+    this.compute_trajectory();
   },
 
   computed: {},
@@ -152,7 +162,6 @@ export default {
       this.investments = this.income - this.expenses;
       this.update_inv_exp_ratio();
     },
-
     inv_exp_ratio_changed: function () {
       this.inv_exp_ratio_10 = this.inv_exp_ratio * 10;
       this.update_inv_exp();
@@ -169,10 +178,10 @@ export default {
       var interest = this.interest_rate / 100;
       var networth = this.current_networth;
 
-      for (let year = 0; year < 50; year++) {
+      for (let year = 0; year < 30; year++) {
         networth = networth * (1 + interest);
         networth += annual_investments;
-        this.trajectory.push(networth);
+        this.trajectory.push(parseInt(networth));
       }
       console.log(this.trajectory);
     },

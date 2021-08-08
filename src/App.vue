@@ -41,12 +41,14 @@
 
 <script>
 import FinancialInputs from "./components/FinancialInputs";
+//import FinancialVisualization from "./components/FinancialVisualization";
 
 export default {
   name: "App",
 
   components: {
     FinancialInputs,
+//    FinancialVisualization,
   },
 
   data: () => ({
